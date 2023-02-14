@@ -35,20 +35,18 @@ namespace Presentacion
             this.ptbMinimizar = new System.Windows.Forms.PictureBox();
             this.ptbMaximizar = new System.Windows.Forms.PictureBox();
             this.ptbCerrar = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.panelIzquierdo = new System.Windows.Forms.Panel();
+            this.panelCentro = new System.Windows.Forms.Panel();
             this.panelArriba.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbRestaurar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbMinimizar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbMaximizar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbCerrar)).BeginInit();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panelArriba
             // 
-            this.panelArriba.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(80)))), ((int)(((byte)(200)))));
+            this.panelArriba.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(123)))), ((int)(((byte)(31)))), ((int)(((byte)(162)))));
             this.panelArriba.Controls.Add(this.ptbRestaurar);
             this.panelArriba.Controls.Add(this.ptbMinimizar);
             this.panelArriba.Controls.Add(this.ptbMaximizar);
@@ -109,33 +107,32 @@ namespace Presentacion
             this.ptbCerrar.TabStop = false;
             this.ptbCerrar.Click += new System.EventHandler(this.ptbCerrar_Click);
             // 
-            // panel1
+            // panelIzquierdo
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
-            this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 58);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 519);
-            this.panel1.TabIndex = 1;
+            this.panelIzquierdo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(42)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
+            this.panelIzquierdo.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panelIzquierdo.Location = new System.Drawing.Point(0, 58);
+            this.panelIzquierdo.Name = "panelIzquierdo";
+            this.panelIzquierdo.Size = new System.Drawing.Size(183, 519);
+            this.panelIzquierdo.TabIndex = 1;
             // 
-            // pictureBox1
+            // panelCentro
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(3, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(200, 123);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
+            this.panelCentro.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
+            this.panelCentro.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelCentro.Location = new System.Drawing.Point(183, 58);
+            this.panelCentro.Name = "panelCentro";
+            this.panelCentro.Size = new System.Drawing.Size(832, 519);
+            this.panelCentro.TabIndex = 2;
             // 
             // FmrCatalogo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(68)))), ((int)(((byte)(82)))));
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(1015, 577);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelCentro);
+            this.Controls.Add(this.panelIzquierdo);
             this.Controls.Add(this.panelArriba);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FmrCatalogo";
@@ -147,8 +144,6 @@ namespace Presentacion
             ((System.ComponentModel.ISupportInitialize)(this.ptbMinimizar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbMaximizar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbCerrar)).EndInit();
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -160,7 +155,7 @@ namespace Presentacion
         private System.Windows.Forms.PictureBox ptbMinimizar;
         private System.Windows.Forms.PictureBox ptbMaximizar;
         private System.Windows.Forms.PictureBox ptbCerrar;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Panel panelIzquierdo;
+        private System.Windows.Forms.Panel panelCentro;
     }
 }

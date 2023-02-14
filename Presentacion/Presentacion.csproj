@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConexionBD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConexionBD.Designer.cs">
+      <DependentUpon>ConexionBD.cs</DependentUpon>
+    </Compile>
     <Compile Include="FmrCatalogo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -54,6 +60,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ConexionBD.resx">
+      <DependentUpon>ConexionBD.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FmrCatalogo.resx">
       <DependentUpon>FmrCatalogo.cs</DependentUpon>
     </EmbeddedResource>
