@@ -47,7 +47,8 @@ namespace Presentacion
 
         private void FmrCatalogo_Load(object sender, EventArgs e)
         {
-
+            CatalogoNegocio negocio = new CatalogoNegocio();
+            dgvTablaBD.DataSource = negocio.listar();
         }
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]

@@ -8,5 +8,6 @@ namespace negocio
 {
     public class AccesoDatos
     {
+
     }
 }
