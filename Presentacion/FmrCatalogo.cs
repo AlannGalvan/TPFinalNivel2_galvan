@@ -15,6 +15,7 @@ namespace Presentacion
 {
     public partial class FmrCatalogo : Form
     {
+        private List<Catalogo> listaCatalogo;
         public FmrCatalogo()
         {
             InitializeComponent();
@@ -45,11 +46,7 @@ namespace Presentacion
             this.WindowState = FormWindowState.Minimized;
         }
 
-        private void FmrCatalogo_Load(object sender, EventArgs e)
-        {
-            CatalogoNegocio negocio = new CatalogoNegocio();
-            dgvTablaBD.DataSource = negocio.listar();
-        }
+       
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
@@ -61,6 +58,35 @@ namespace Presentacion
         {
             ReleaseCapture();
             SendMessage(this.Handle, 0x112, 0xf012, 0);
+        }
+
+        private void FmrCatalogo_Load(object sender, EventArgs e)
+        {
+            CatalogoNegocio negocio = new CatalogoNegocio();
+            listaCatalogo = negocio.listar();
+            dgvTablaBD.DataSource = listaCatalogo;
+            dgvTablaBD.Columns["Descripcion"].Visible = false;
+            dgvTablaBD.Columns["ImagenUrl"].Visible = false;
+            cargarImagen(listaCatalogo[0].ImagenUrl);
+        }
+
+        private void dgvTablaBD_SelectionChanged(object sender, EventArgs e)
+        {
+            Catalogo seleccionado = (Catalogo)dgvTablaBD.CurrentRow.DataBoundItem;
+            cargarImagen(seleccionado.ImagenUrl);
+        }
+
+        private void cargarImagen(string imagen)
+        {
+            try
+            {
+                ptbCatalogo.Load(imagen);
+            }
+            catch (Exception ex)
+            {
+                ptbCatalogo.Load("https://www.christushealth.org/-/media/images/components/defaults/placeholderimage.jpg");
+                
+            }
         }
     }
 }

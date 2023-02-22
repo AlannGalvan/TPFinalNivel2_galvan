@@ -36,14 +36,14 @@ namespace Presentacion
             this.ptbMaximizar = new System.Windows.Forms.PictureBox();
             this.ptbCerrar = new System.Windows.Forms.PictureBox();
             this.panelIzquierdo = new System.Windows.Forms.Panel();
-            this.ptbImagenes = new System.Windows.Forms.PictureBox();
+            this.ptbCatalogo = new System.Windows.Forms.PictureBox();
             this.dgvTablaBD = new System.Windows.Forms.DataGridView();
             this.panelArriba.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ptbRestaurar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbMinimizar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbMaximizar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbCerrar)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbImagenes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbCatalogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTablaBD)).BeginInit();
             this.SuspendLayout();
             // 
@@ -119,21 +119,25 @@ namespace Presentacion
             this.panelIzquierdo.Size = new System.Drawing.Size(183, 408);
             this.panelIzquierdo.TabIndex = 1;
             // 
-            // ptbImagenes
+            // ptbCatalogo
             // 
-            this.ptbImagenes.Location = new System.Drawing.Point(740, 64);
-            this.ptbImagenes.Name = "ptbImagenes";
-            this.ptbImagenes.Size = new System.Drawing.Size(246, 292);
-            this.ptbImagenes.TabIndex = 2;
-            this.ptbImagenes.TabStop = false;
+            this.ptbCatalogo.Location = new System.Drawing.Point(740, 64);
+            this.ptbCatalogo.Name = "ptbCatalogo";
+            this.ptbCatalogo.Size = new System.Drawing.Size(246, 292);
+            this.ptbCatalogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ptbCatalogo.TabIndex = 2;
+            this.ptbCatalogo.TabStop = false;
             // 
             // dgvTablaBD
             // 
+            this.dgvTablaBD.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
             this.dgvTablaBD.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTablaBD.Location = new System.Drawing.Point(189, 64);
             this.dgvTablaBD.Name = "dgvTablaBD";
+            this.dgvTablaBD.ReadOnly = true;
             this.dgvTablaBD.Size = new System.Drawing.Size(545, 292);
             this.dgvTablaBD.TabIndex = 3;
+            this.dgvTablaBD.SelectionChanged += new System.EventHandler(this.dgvTablaBD_SelectionChanged);
             // 
             // FmrCatalogo
             // 
@@ -142,7 +146,7 @@ namespace Presentacion
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(66)))), ((int)(((byte)(66)))));
             this.ClientSize = new System.Drawing.Size(1015, 466);
             this.Controls.Add(this.dgvTablaBD);
-            this.Controls.Add(this.ptbImagenes);
+            this.Controls.Add(this.ptbCatalogo);
             this.Controls.Add(this.panelIzquierdo);
             this.Controls.Add(this.panelArriba);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -155,7 +159,7 @@ namespace Presentacion
             ((System.ComponentModel.ISupportInitialize)(this.ptbMinimizar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbMaximizar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ptbCerrar)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ptbImagenes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ptbCatalogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTablaBD)).EndInit();
             this.ResumeLayout(false);
 
@@ -169,7 +173,7 @@ namespace Presentacion
         private System.Windows.Forms.PictureBox ptbMaximizar;
         private System.Windows.Forms.PictureBox ptbCerrar;
         private System.Windows.Forms.Panel panelIzquierdo;
-        private System.Windows.Forms.PictureBox ptbImagenes;
+        private System.Windows.Forms.PictureBox ptbCatalogo;
         private System.Windows.Forms.DataGridView dgvTablaBD;
     }
 }
