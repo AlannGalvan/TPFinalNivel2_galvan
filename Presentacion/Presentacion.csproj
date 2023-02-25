@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConexionBD.cs">
+    <Compile Include="fmrAgregarProducto.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConexionBD.Designer.cs">
-      <DependentUpon>ConexionBD.cs</DependentUpon>
+    <Compile Include="fmrAgregarProducto.Designer.cs">
+      <DependentUpon>fmrAgregarProducto.cs</DependentUpon>
     </Compile>
     <Compile Include="FmrCatalogo.cs">
       <SubType>Form</SubType>
@@ -60,8 +60,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ConexionBD.resx">
-      <DependentUpon>ConexionBD.cs</DependentUpon>
+    <EmbeddedResource Include="fmrAgregarProducto.resx">
+      <DependentUpon>fmrAgregarProducto.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FmrCatalogo.resx">
       <DependentUpon>FmrCatalogo.cs</DependentUpon>

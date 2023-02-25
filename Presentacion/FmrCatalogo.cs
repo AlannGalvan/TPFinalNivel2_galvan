@@ -62,18 +62,31 @@ namespace Presentacion
 
         private void FmrCatalogo_Load(object sender, EventArgs e)
         {
-            CatalogoNegocio negocio = new CatalogoNegocio();
-            listaCatalogo = negocio.listar();
-            dgvTablaBD.DataSource = listaCatalogo;
-            dgvTablaBD.Columns["Descripcion"].Visible = false;
-            dgvTablaBD.Columns["ImagenUrl"].Visible = false;
-            cargarImagen(listaCatalogo[0].ImagenUrl);
+            cargar();
         }
 
         private void dgvTablaBD_SelectionChanged(object sender, EventArgs e)
         {
             Catalogo seleccionado = (Catalogo)dgvTablaBD.CurrentRow.DataBoundItem;
             cargarImagen(seleccionado.ImagenUrl);
+        }
+
+        private void cargar()
+        {
+            CatalogoNegocio negocio = new CatalogoNegocio();
+            try
+            {
+                listaCatalogo = negocio.listar();
+                dgvTablaBD.DataSource = listaCatalogo;
+                dgvTablaBD.Columns["Descripcion"].Visible = false;
+                dgvTablaBD.Columns["ImagenUrl"].Visible = false;
+                cargarImagen(listaCatalogo[0].ImagenUrl);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         private void cargarImagen(string imagen)
@@ -87,6 +100,14 @@ namespace Presentacion
                 ptbCatalogo.Load("https://www.christushealth.org/-/media/images/components/defaults/placeholderimage.jpg");
                 
             }
+        }
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            fmrAgregarProducto alta = new fmrAgregarProducto();
+            alta.ShowDialog();
+            cargar();
+
         }
     }
 }
