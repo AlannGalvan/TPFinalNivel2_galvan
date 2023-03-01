@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using dominio;
 using negocio;
-using System.Runtime.InteropServices;
+
 
 namespace Presentacion
 {
@@ -19,56 +19,25 @@ namespace Presentacion
         public FmrCatalogo()
         {
             InitializeComponent();
-        }
-
-        private void ptbCerrar_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void ptbMaximizar_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Maximized;
-            ptbMaximizar.Visible = false;
-            ptbRestaurar.Visible = true;
-        }
-
-        private void ptbRestaurar_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Normal;
-            ptbRestaurar.Visible = false;
-            ptbMaximizar.Visible = true;
-
-        }
-
-        private void ptbMinimizar_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
-        }
-
-       
-
-        [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
-        private extern static void ReleaseCapture();
-        [DllImport("user32.DLL", EntryPoint = "SendMessage")]
-
-        private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParam, int lParam);
-
-        private void panelArriba_MouseDown(object sender, MouseEventArgs e)
-        {
-            ReleaseCapture();
-            SendMessage(this.Handle, 0x112, 0xf012, 0);
-        }
+        }        
 
         private void FmrCatalogo_Load(object sender, EventArgs e)
         {
-            cargar();
+            cargar();            
+            cboCampo.Items.Add("Nombre");
+            cboCampo.Items.Add("Marca");
+            cboCampo.Items.Add("Categoria");
+            cboCampo.Items.Add("Precio");
         }
 
         private void dgvTablaBD_SelectionChanged(object sender, EventArgs e)
-        {
-            Catalogo seleccionado = (Catalogo)dgvTablaBD.CurrentRow.DataBoundItem;
-            cargarImagen(seleccionado.ImagenUrl);
+        {   
+            if(dgvTablaBD.CurrentRow != null)
+            {
+                Catalogo seleccionado = (Catalogo)dgvTablaBD.CurrentRow.DataBoundItem;
+                cargarImagen(seleccionado.ImagenUrl);
+            }
+      
         }
 
         private void cargar()
@@ -78,8 +47,7 @@ namespace Presentacion
             {
                 listaCatalogo = negocio.listar();
                 dgvTablaBD.DataSource = listaCatalogo;
-                dgvTablaBD.Columns["Descripcion"].Visible = false;
-                dgvTablaBD.Columns["ImagenUrl"].Visible = false;
+                ocultarCulumnas();
                 cargarImagen(listaCatalogo[0].ImagenUrl);
             }
             catch (Exception ex)
@@ -89,16 +57,23 @@ namespace Presentacion
             }
         }
 
+        private void ocultarCulumnas()
+        {
+            dgvTablaBD.Columns["Id"].Visible = false;
+            dgvTablaBD.Columns["Descripcion"].Visible = false;
+            dgvTablaBD.Columns["ImagenUrl"].Visible = false;
+        }
+
         private void cargarImagen(string imagen)
         {
             try
             {
-                ptbCatalogo.Load(imagen);
+                ptbImagenUrl.Load(imagen);
             }
             catch (Exception ex)
             {
-                ptbCatalogo.Load("https://www.christushealth.org/-/media/images/components/defaults/placeholderimage.jpg");
-                
+                ptbImagenUrl.Load("https://www.christushealth.org/-/media/images/components/defaults/placeholderimage.jpg");
+
             }
         }
 
@@ -108,6 +83,95 @@ namespace Presentacion
             alta.ShowDialog();
             cargar();
 
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            Catalogo seleccionado;
+            seleccionado = (Catalogo)dgvTablaBD.CurrentRow.DataBoundItem;
+
+            fmrAgregarProducto modificar = new fmrAgregarProducto(seleccionado);
+            modificar.ShowDialog();
+            cargar();
+        }
+
+        private void btnEliminarFisico_Click(object sender, EventArgs e)
+        {
+            CatalogoNegocio negocio = new CatalogoNegocio();
+            Catalogo seleccionado;
+            try
+            {
+                DialogResult respuesta = MessageBox.Show("¿De Verdad Querés Eliminarlo?", "Eliminando", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if(respuesta == DialogResult.Yes)
+                {
+                    seleccionado = (Catalogo)dgvTablaBD.CurrentRow.DataBoundItem;
+                    negocio.eliminar(seleccionado.Id);
+                    cargar();
+                }
+               
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void btnFiltroBuscar_Click(object sender, EventArgs e)
+        {
+            CatalogoNegocio negocio = new CatalogoNegocio();
+            try
+            {
+                string campo = cboCampo.SelectedItem.ToString();
+                string criterio = cboCriterio.SelectedItem.ToString();
+                string filtro = txtFiltroAvanzado.Text;
+                dgvTablaBD.DataSource = negocio.filtrar(campo, criterio, filtro);
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.ToString());
+            }
+            
+
+        }
+
+        private void txtFiltro_TextChanged(object sender, EventArgs e)
+        {
+            List<Catalogo> listaFriltrada;
+            string filtro = txtFiltro.Text;
+
+            if (filtro.Length >= 2)
+            {
+                listaFriltrada = listaCatalogo.FindAll(x => x.Nombre.ToUpper().Contains(filtro.ToUpper()));
+            }
+            else
+            {
+                listaFriltrada = listaCatalogo;
+            }
+
+            dgvTablaBD.DataSource = null;
+            dgvTablaBD.DataSource = listaFriltrada;
+            ocultarCulumnas();
+        }
+
+        private void cboCampo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string opcion = cboCampo.SelectedItem.ToString();
+            if(opcion == "Precio")
+            {
+                cboCriterio.Items.Clear();
+                cboCriterio.Items.Add("Mayor a");
+                cboCriterio.Items.Add("Menor a");
+                cboCriterio.Items.Add("Igual a");
+            }
+            else
+            {
+                cboCriterio.Items.Clear();
+                cboCriterio.Items.Add("Comienza con");
+                cboCriterio.Items.Add("Termina con");
+                cboCriterio.Items.Add("Contiene");
+            }
         }
     }
 }

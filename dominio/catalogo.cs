@@ -8,7 +8,9 @@ using System.ComponentModel;
 namespace dominio
 {
     public class Catalogo
-    {   
+    {
+        public int Id { get; set; }
+
         [DisplayName("Código")]
         public string Codigo { get; set; }
 
