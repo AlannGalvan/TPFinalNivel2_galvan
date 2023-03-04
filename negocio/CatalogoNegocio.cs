@@ -16,12 +16,12 @@ namespace negocio
         {
             List<Catalogo> lista = new List<Catalogo>();
             AccesoDatos datos = new AccesoDatos();
-
+            
             try
             {
                 datos.setearConsulta("select Codigo, Nombre, A.Descripcion, M.Descripcion Marca, C.Descripcion Categoria, ImagenUrl, Precio, A.IdMarca, A.IdCategoria, A.Id from ARTICULOS A, CATEGORIAS C, MARCAS M where C.Id = A.IdCategoria And M.Id = A.IdMarca");
                 datos.ejecutarLectura();                
-
+                
                 while (datos.Lector.Read())
                 {
                     Catalogo aux = new Catalogo();
@@ -156,13 +156,13 @@ namespace negocio
                         switch (criterio)
                         {
                             case "Comienza con":
-                                consulta += "M.Descripcion Marca like '" + filtro + "%' ";
+                                consulta += "M.Descripcion like '" + filtro + "%' ";
                                 break;
                             case "Termina con":
-                                consulta += "M.Descripcion Marca like '%" + filtro + "'";
+                                consulta += "M.Descripcion like '%" + filtro + "'";
                                 break;
                             default:
-                                consulta += "M.Descripcion Marca like '%" + filtro + "%'";
+                                consulta += "M.Descripcion  like '%" + filtro + "%'";
                                 break;
                         }
                         break;
@@ -171,13 +171,13 @@ namespace negocio
                         switch (criterio)
                         {
                             case "Comienza con":
-                                consulta += "C.Descripcion Categoria like '" + filtro + "%' ";
+                                consulta += "C.Descripcion  like '" + filtro + "%' ";
                                 break;
                             case "Termina con":
-                                consulta += "C.Descripcion Categoria like '%" + filtro +"'";
+                                consulta += "C.Descripcion  like '%" + filtro +"'";
                                 break;
                             default:
-                                consulta += "C.Descripcion Categoria like '%" + filtro + "%'";
+                                consulta += "C.Descripcion  like '%" + filtro + "%'";
                                 break;
                         }
                         break;

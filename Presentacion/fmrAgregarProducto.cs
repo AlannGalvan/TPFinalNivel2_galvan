@@ -26,8 +26,8 @@ namespace Presentacion
         {
             InitializeComponent();
             this.catalogo = catalogo;
-            Text = "Modificar Producto";
-        }
+            lblTitulo.Text = "Modificar Producto";
+        }                   
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
@@ -36,7 +36,7 @@ namespace Presentacion
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
-            
+     
             CatalogoNegocio negocio = new CatalogoNegocio();
 
             try
@@ -44,30 +44,52 @@ namespace Presentacion
                 if (catalogo == null)
                     catalogo = new Catalogo();
 
+
                 catalogo.Codigo = txtCodigo.Text;
                 catalogo.Nombre = txtNombre.Text;
                 catalogo.Descripcion = txtDescripcion.Text;
                 catalogo.Marca = (Marca)cboMarca.SelectedItem;
                 catalogo.Categoria = (Categoria)cboCategoria.SelectedItem;
                 catalogo.ImagenUrl = txtImagenUrl.Text;
-                catalogo.Precio = decimal.Parse(txtPrecio.Text);
-
-                if(catalogo.Id != 0)
+                decimal precio;
+                if (decimal.TryParse(txtPrecio.Text, out precio))
                 {
-                    negocio.modificar(catalogo);
-                    MessageBox.Show("Modificado exitosamente");
+                catalogo.Precio = precio;
                 }
                 else
                 {
-                    negocio.agregar(catalogo);
-                    MessageBox.Show("Agregado exitosamente");
+                    MessageBox.Show("Completar los campos obligatorios!", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
 
-                if (archivo != null && !(txtImagenUrl.Text.ToUpper().Contains("HTTP")))
-                    guardarImagenLocal();
-                                
-                Close();
 
+
+            completarTexto();
+                if (txtCodigo.Text != "" && txtNombre.Text != "" && txtPrecio.Text != "" &&  cboMarca.Text != "" && cboCategoria.Text != "")
+                {
+                    if (catalogo.Id != 0)
+                    {
+                        negocio.modificar(catalogo);
+                        MessageBox.Show("Modificado exitosamente", "Modificado", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+                    else
+                    {
+                        negocio.agregar(catalogo);
+                        MessageBox.Show("Agregado exitosamente", "Agregado", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    }
+
+                    if (archivo != null && !(txtImagenUrl.Text.ToUpper().Contains("HTTP")))
+                        guardarImagenLocal();
+
+                    
+                    Close();
+                }
+
+
+                if (txtPrecio.Text != "")
+                {
+                      if (txtCodigo.Text == "" || txtNombre.Text == "" || cboMarca.Text == "" || cboCategoria.Text == "")
+                         MessageBox.Show("Completar los campos obligatorios!", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                 } 
             }
             catch (Exception ex)
             {
@@ -88,6 +110,8 @@ namespace Presentacion
                 cboMarca.DataSource = marcaNegocio.listar();
                 cboMarca.ValueMember = "Id";
                 cboMarca.DisplayMember = "Descripcion";
+                cboMarca.SelectedIndex = -1;
+                cboCategoria.SelectedIndex = -1;
 
                 if(catalogo != null)
                 {
@@ -99,7 +123,6 @@ namespace Presentacion
                     txtImagenUrl.Text = catalogo.ImagenUrl;
                     cargarImagen(catalogo.ImagenUrl);
                     txtPrecio.Text = catalogo.Precio.ToString();
-
                 }
             }
             catch (Exception ex)
@@ -120,29 +143,67 @@ namespace Presentacion
             {
                 ptbImagenUrl.Load(imagen);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 ptbImagenUrl.Load("https://www.christushealth.org/-/media/images/components/defaults/placeholderimage.jpg");
 
             }
         }
 
-        private void ptbAgrgarImagen_Click(object sender, EventArgs e)
+        private void guardarImagenLocal()
+        {
+            File.Copy(archivo.FileName, ConfigurationManager.AppSettings["images-folder"] + archivo.SafeFileName);
+        }
+
+        private void btnSubirImagen_Click(object sender, EventArgs e)
         {
             archivo = new OpenFileDialog(); ;
             archivo.Filter = "jpg|*.jpg;|png|*.png";
-            if(archivo.ShowDialog() == DialogResult.OK)
+            if (archivo.ShowDialog() == DialogResult.OK)
             {
                 txtImagenUrl.Text = archivo.FileName;
                 cargarImagen(archivo.FileName);
 
-                
+
             }
         }
 
-        private void guardarImagenLocal()
+        private void completarTexto()
         {
-            File.Copy(archivo.FileName, ConfigurationManager.AppSettings["images-folder"] + archivo.SafeFileName);
+            if (txtCodigo.Text == "")
+                lblCodigo.ForeColor = Color.Red;
+            else
+                lblCodigo.ForeColor = System.Drawing.SystemColors.Control;
+
+            if (txtNombre.Text == "")
+                lblNombre.ForeColor = Color.Red;
+            else
+                lblNombre.ForeColor = System.Drawing.SystemColors.Control;
+
+            if (txtPrecio.Text == "")
+                lblPrecio.ForeColor = Color.Red;
+            else
+               lblPrecio.ForeColor = System.Drawing.SystemColors.Control;
+
+            if (cboMarca.Text == "")
+                lblMarca.ForeColor = Color.Red;
+            else
+                lblMarca.ForeColor = System.Drawing.SystemColors.Control;
+
+            if (cboCategoria.Text == "")
+                lblCategoria.ForeColor = Color.Red;
+            else
+                lblCategoria.ForeColor = System.Drawing.SystemColors.Control;
+        }
+
+        private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if ((e.KeyChar >= 32 && e.KeyChar <= 47) || (e.KeyChar >= 58 && e.KeyChar <= 255))
+            {
+                MessageBox.Show("Solo Números", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                e.Handled = true;
+                return;
+            }
         }
     }
 }

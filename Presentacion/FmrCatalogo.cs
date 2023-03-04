@@ -23,11 +23,14 @@ namespace Presentacion
 
         private void FmrCatalogo_Load(object sender, EventArgs e)
         {
-            cargar();            
+            
+            cargar();
+            dgvTablaBD.Columns[0].Selected = true;
             cboCampo.Items.Add("Nombre");
             cboCampo.Items.Add("Marca");
             cboCampo.Items.Add("Categoria");
             cboCampo.Items.Add("Precio");
+
         }
 
         private void dgvTablaBD_SelectionChanged(object sender, EventArgs e)
@@ -70,7 +73,7 @@ namespace Presentacion
             {
                 ptbImagenUrl.Load(imagen);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 ptbImagenUrl.Load("https://www.christushealth.org/-/media/images/components/defaults/placeholderimage.jpg");
 
@@ -78,21 +81,34 @@ namespace Presentacion
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
-        {
-            fmrAgregarProducto alta = new fmrAgregarProducto();
-            alta.ShowDialog();
-            cargar();
+        {           
+            
+                fmrAgregarProducto alta = new fmrAgregarProducto();
+                alta.ShowDialog();
+                cargar();            
 
         }
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            Catalogo seleccionado;
-            seleccionado = (Catalogo)dgvTablaBD.CurrentRow.DataBoundItem;
-
-            fmrAgregarProducto modificar = new fmrAgregarProducto(seleccionado);
-            modificar.ShowDialog();
-            cargar();
+            
+             Catalogo seleccionado;
+            if (dgvTablaBD.CurrentRow != null && dgvTablaBD.CurrentRow.DataBoundItem != null)
+            {
+                seleccionado = (Catalogo)dgvTablaBD.CurrentRow.DataBoundItem;
+                fmrAgregarProducto modificar = new fmrAgregarProducto(seleccionado);
+                modificar.ShowDialog();
+                cargar();
+            }
+            else
+            {
+                cargar();
+                dgvTablaBD.Columns[0].Selected = true;
+                MessageBox.Show("Espere...", "Cargando", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                
+            }
+           
+            
         }
 
         private void btnEliminarFisico_Click(object sender, EventArgs e)
@@ -122,6 +138,9 @@ namespace Presentacion
             CatalogoNegocio negocio = new CatalogoNegocio();
             try
             {
+                if (validarFiltro())
+                    return;
+
                 string campo = cboCampo.SelectedItem.ToString();
                 string criterio = cboCriterio.SelectedItem.ToString();
                 string filtro = txtFiltroAvanzado.Text;
@@ -129,11 +148,52 @@ namespace Presentacion
             }
             catch (Exception ex)
             {
-
                 MessageBox.Show(ex.ToString());
             }
             
 
+        }
+
+        public bool validarFiltro()
+        {
+            if (cboCampo.SelectedIndex < 0)
+            {
+                MessageBox.Show("Por Favor, Seleccione El Campo Para Filtrar.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return true;
+            }
+            if(cboCriterio.SelectedIndex < 0)
+            {
+                MessageBox.Show("Por Favor, Seleccione El Criterio Para Filtrar.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return true;
+            }
+
+            if (cboCampo.SelectedItem.ToString() == "Precio")
+            {
+                if (string.IsNullOrEmpty(txtFiltroAvanzado.Text))
+                {
+                    MessageBox.Show("Cargar El Filtro Númerico...", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return true;
+                }
+                if (!(soloNum(txtFiltroAvanzado.Text)))
+                {
+                    MessageBox.Show("Ingresar Solo Números...", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return true;
+                }
+                    
+            }
+                
+
+            return false;
+        }
+        private bool soloNum(string cadena)
+        {
+            foreach (var caracter in cadena)
+            {
+                if (!(char.IsNumber(caracter)))
+                    return false;
+            }
+            return true;
+            
         }
 
         private void txtFiltro_TextChanged(object sender, EventArgs e)
@@ -143,7 +203,7 @@ namespace Presentacion
 
             if (filtro.Length >= 2)
             {
-                listaFriltrada = listaCatalogo.FindAll(x => x.Nombre.ToUpper().Contains(filtro.ToUpper()));
+                listaFriltrada = listaCatalogo.FindAll(x => x.Nombre.ToUpper().Contains(filtro.ToUpper()) || x.Marca.Descripcion.ToUpper().Contains(filtro.ToUpper()) || x.Categoria.Descripcion.ToUpper().Contains(filtro.ToUpper()));
             }
             else
             {
@@ -173,5 +233,27 @@ namespace Presentacion
                 cboCriterio.Items.Add("Contiene");
             }
         }
+
+        private void btnVerMas_Click(object sender, EventArgs e)
+        {
+           
+                Catalogo seleccionado;
+            if (dgvTablaBD.CurrentRow != null && dgvTablaBD.CurrentRow.DataBoundItem != null)
+            {
+                seleccionado = (Catalogo)dgvTablaBD.CurrentRow.DataBoundItem;
+                fmrVerMas descripcion = new fmrVerMas(seleccionado);
+                descripcion.ShowDialog();
+                cargar();
+            }
+            else
+            {
+                cargar();
+                dgvTablaBD.Columns[0].Selected = true;
+                MessageBox.Show("Espere...", "Cargando", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+           
+        }
+
+    
     }
 }
